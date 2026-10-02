@@ -1,0 +1,76 @@
+{
+  "name": "claude-code-mods",
+  "owner": {
+    "name": "Murat Can Yuksel",
+    "url": "https://github.com/0xGondarxyz"
+  },
+  "description": "Free mods for Claude Code: guards, status lines, message buttons, writing rules.",
+  "plugins": [
+    {
+      "name": "active-time",
+      "source": "./active-time",
+      "description": "Counts the time you really spend with Claude Code (typing and Claude working, not an idle terminal) and shows it in the status line and /claude-time.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "agent-watch",
+      "source": "./agent-watch",
+      "description": "Shows one line per running subagent above the prompt: model, task, minutes and its latest tool call",
+      "version": "0.1.0"
+    },
+    {
+      "name": "dashless",
+      "source": "./dashless",
+      "description": "Rewrites em dashes out of Claude's replies, file writes and edits, and commit/PR messages before they land.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "output-ladder",
+      "source": "./output-ladder",
+      "description": "Re-explain the last answer as ASD-STE100 text, a diagram, an HTML page or an explainer video, and score answers for STE style.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "quote-buttons",
+      "source": "./quote-buttons",
+      "description": "Quote and edit buttons on chat messages, hand-off buttons that open a new Konsole tab with Claude on that message, and a 5 second undo for prompts sent while a turn runs.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "save-game",
+      "source": "./save-game",
+      "description": "Saves a 3 line card when you stop (doing, next step, open question) and shows it above the prompt next time",
+      "version": "0.1.0"
+    },
+    {
+      "name": "secret-guard",
+      "source": "./secret-guard",
+      "description": "Masks API keys and tokens in tool results before Claude reads them, and blocks a git push that would leak secrets or home paths to a public repo.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "slopless",
+      "source": "./slopless",
+      "description": "Blocks AI sounding text in social media writing (X replies, X posts, LinkedIn posts) and injects the writing rules.",
+      "version": "0.1.1"
+    },
+    {
+      "name": "snap",
+      "source": "./snap",
+      "description": "/snap: drag a box on screen with Spectacle and the screenshot goes into your next message.",
+      "version": "0.1.0"
+    },
+    {
+      "name": "spiral-stop",
+      "source": "./spiral-stop",
+      "description": "Stops fix loops: when the same error returns after 3 fix attempts, tells you and Claude to stop and rethink",
+      "version": "0.1.0"
+    },
+    {
+      "name": "usage-meter",
+      "source": "./usage-meter",
+      "description": "Shows your Claude 5 hour and weekly rate limits in the status line and warns at 80% and 90%.",
+      "version": "0.1.0"
+    }
+  ]
+}

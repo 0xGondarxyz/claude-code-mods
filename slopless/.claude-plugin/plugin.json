@@ -1,0 +1,15 @@
+{
+  "name": "slopless",
+  "version": "0.1.1",
+  "description": "Blocks AI sounding text in social media writing (X replies, X posts, LinkedIn posts) and injects the writing rules.",
+  "author": { "name": "Murat Can Yuksel", "url": "https://github.com/0xGondarxyz" },
+  "license": "MIT",
+  "userConfig": {
+    "voiceFile": {
+      "type": "string",
+      "title": "Voice file",
+      "description": "Absolute path to a personal voice and facts markdown file. Leave empty to skip.",
+      "default": ""
+    }
+  }
+}

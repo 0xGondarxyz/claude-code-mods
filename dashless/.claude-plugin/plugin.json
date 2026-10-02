@@ -1,0 +1,7 @@
+{
+  "name": "dashless",
+  "version": "0.1.0",
+  "description": "Rewrites em dashes out of Claude's replies, file writes and edits, and commit/PR messages before they land.",
+  "author": { "name": "Murat Can Yuksel", "url": "https://github.com/0xGondarxyz" },
+  "license": "MIT"
+}

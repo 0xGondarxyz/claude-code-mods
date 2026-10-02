@@ -1,0 +1,11 @@
+{
+  "name": "output-ladder",
+  "version": "0.1.0",
+  "description": "Re-explain the last answer as ASD-STE100 text, a diagram, an HTML page or an explainer video, and score answers for STE style.",
+  "author": {
+    "name": "Murat Can Yuksel",
+    "url": "https://github.com/0xGondarxyz"
+  },
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}

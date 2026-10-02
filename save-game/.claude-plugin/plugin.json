@@ -1,0 +1,7 @@
+{
+  "name": "save-game",
+  "version": "0.1.0",
+  "description": "Saves a 3 line card when you stop (doing, next step, open question) and shows it above the prompt next time",
+  "author": { "name": "Murat Can Yuksel", "url": "https://github.com/0xGondarxyz" },
+  "types": "./types/index.d.ts"
+}

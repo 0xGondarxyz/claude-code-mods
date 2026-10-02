@@ -1,0 +1,7 @@
+{
+  "name": "quote-buttons",
+  "version": "0.1.0",
+  "description": "A quote button on every chat message, an edit button on your own, and a 5 second undo for prompts sent while a turn runs.",
+  "author": { "name": "Murat Can Yuksel", "url": "https://github.com/0xGondarxyz" },
+  "types": "./types/index.d.ts"
+}

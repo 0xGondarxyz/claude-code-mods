@@ -1,0 +1,7 @@
+{
+  "name": "agent-watch",
+  "version": "0.1.0",
+  "description": "Shows one line per running subagent above the prompt: model, task, minutes and its latest tool call",
+  "author": { "name": "Murat Can Yuksel", "url": "https://github.com/0xGondarxyz" },
+  "types": "./types/index.d.ts"
+}

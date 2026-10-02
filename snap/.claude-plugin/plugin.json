@@ -1,0 +1,6 @@
+{
+  "name": "snap",
+  "version": "0.1.0",
+  "description": "/snap: drag a box on screen with Spectacle and the screenshot goes into your next message.",
+  "author": { "name": "Murat Can Yuksel", "url": "https://github.com/0xGondarxyz" }
+}

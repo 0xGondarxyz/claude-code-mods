@@ -1,0 +1,7 @@
+{
+  "name": "active-time",
+  "version": "0.1.0",
+  "description": "Counts the time you really spend with Claude Code (typing and Claude working, not an idle terminal) and shows it in the status line and /claude-time.",
+  "author": { "name": "Murat Can Yuksel", "url": "https://github.com/0xGondarxyz" },
+  "license": "MIT"
+}

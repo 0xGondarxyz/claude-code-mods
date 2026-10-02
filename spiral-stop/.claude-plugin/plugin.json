@@ -1,0 +1,7 @@
+{
+  "name": "spiral-stop",
+  "version": "0.1.0",
+  "description": "Stops fix loops: when the same error returns after 3 fix attempts, tells you and Claude to stop and rethink",
+  "author": { "name": "Murat Can Yuksel", "url": "https://github.com/0xGondarxyz" },
+  "types": "./types/index.d.ts"
+}
