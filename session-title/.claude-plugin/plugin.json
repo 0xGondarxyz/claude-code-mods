@@ -1,0 +1,11 @@
+{
+  "name": "session-title",
+  "version": "0.1.0",
+  "description": "Shows a short title of what the session is about in the status line, so many open terminals are easy to tell apart.",
+  "author": {
+    "name": "Murat Can Yuksel",
+    "url": "https://github.com/0xGondarxyz"
+  },
+  "license": "MIT",
+  "types": "./types/index.d.ts"
+}

@@ -16,7 +16,7 @@ They got 2 to 7 views each. So I read 421 replies under 8 indie hacker posts and
 | Your prompt | if it mentions tweets, X posts or replies, LinkedIn, TikTok, Reddit, captions and so on, rules.md and your voice file are attached |
 | Write and Edit | `.txt` and `.md` files under a folder whose name contains social, linkedin, tweet or twitter are checked. ALL CAPS file names (README.md, PLAN.md) count as notes and are skipped |
 | Bash | commands that write into those folders are checked |
-| Browser | text Claude types through Claude in Chrome (type, form_input, browser_batch, scripts that insert text) is checked |
+| Browser | text Claude types through Claude in Chrome (type, form_input, browser_batch, scripts that insert text) is checked. Hashtags are allowed when the tab is on youtube.com (titles and descriptions there need them); all other rules still apply |
 
 When the text breaks a rule, the tool call is blocked and Claude gets the hits:
 

@@ -217,3 +217,64 @@ test('prompt.compose appends the notice', async ($, on) => {
   expect((s?.text.length ?? 999) < 500).toBe(true)
   expect((s?.text ?? '/').includes('/')).toBe(false)
 })
+
+const TAGS = "Thumbs down to kill a gladiator? That's from an 1872 painting. #history #gladiator"
+
+// One mcp.call stub per test; `reply` is swapped between calls (hooks must register before the first $ call).
+function tabs(on: any, url: string) {
+  const state = {
+    n: 0,
+    reply: (): unknown => {
+      const json = JSON.stringify({ availableTabs: [{ tabId: 7, title: 't', url: state.url }], tabGroupId: 1 })
+      return { content: [{ type: 'text', text: `${json}\n\nTab Context:\n- tabId 7` }], isError: false }
+    },
+    url,
+  }
+  on('mcp.call', () => {
+    state.n += 1
+    return { value: state.reply() } as never
+  })
+  return state
+}
+
+const typeIn = (text: string, tabId = 7) => ({ tool: `${CHROME}computer`, action: 'type', text, tabId })
+
+test('hashtags are allowed on YouTube tabs only', async ($, on) => {
+  stub(on)
+  tabs(on, 'https://studio.youtube.com/video/abc/edit')
+  await prime($)
+  expect((await run($, typeIn(TAGS))).denied).toBe(false)
+  expect((await run($, typeIn(TAGS, 8))).denied).toBe(true)
+  const batch = { tool: `${CHROME}browser_batch`, actions: [{ name: 'computer', input: { action: 'type', text: TAGS, tabId: 7 } }] }
+  expect((await run($, batch)).denied).toBe(false)
+  const other = await run($, typeIn(`${TAGS} not just`))
+  expect(other.denied).toBe(true)
+  expect(other.text.includes('hashtag')).toBe(false)
+})
+
+test('hashtags stay blocked on other sites, and clean text never looks up tabs', async ($, on) => {
+  stub(on)
+  const st = tabs(on, 'https://x.com/compose/post')
+  await prime($)
+  expect((await run($, typeIn(TAGS))).denied).toBe(true)
+  st.url = 'https://notyoutube.com/'
+  expect((await run($, typeIn(TAGS))).denied).toBe(true)
+  st.url = 'https://www.youtube.com/'
+  st.n = 0
+  expect((await run($, typeIn('do you already have a following there?'))).denied).toBe(false)
+  expect(st.n).toBe(0)
+})
+
+test('hashtag check fails closed when the tab lookup breaks', async ($, on) => {
+  stub(on)
+  const st = tabs(on, 'https://www.youtube.com/')
+  await prime($)
+  st.reply = () => {
+    throw new Error('no browser')
+  }
+  expect((await run($, typeIn(TAGS))).denied).toBe(true)
+  st.reply = () => ({ content: [{ type: 'text', text: 'not json' }], isError: false })
+  expect((await run($, typeIn(TAGS))).denied).toBe(true)
+  st.reply = () => ({ content: [{ type: 'text', text: '{}' }], isError: true })
+  expect((await run($, typeIn(TAGS))).denied).toBe(true)
+})

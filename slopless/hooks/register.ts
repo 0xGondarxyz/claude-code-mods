@@ -49,7 +49,9 @@ function jsLiterals(code: string): string[] {
   return out
 }
 
-function browserTexts(name: string, input: Record<string, unknown>): string[] {
+type BrowserText = { text: string; tabId?: number }
+
+function browserTexts(name: string, input: Record<string, unknown>): BrowserText[] {
   const str = (v: unknown) => (typeof v === 'string' ? v : undefined)
   const forAction = (tool: string, inp: Record<string, unknown>): string[] => {
     if (tool === 'computer') {
@@ -66,7 +68,11 @@ function browserTexts(name: string, input: Record<string, unknown>): string[] {
     }
     return []
   }
-  let texts: string[] = []
+  const out: BrowserText[] = []
+  const add = (texts: string[], inp: Record<string, unknown>) => {
+    const tabId = typeof inp.tabId === 'number' ? inp.tabId : undefined
+    for (const text of texts) out.push({ text, tabId })
+  }
   if (name.startsWith(CHROME)) {
     const tool = name.slice(CHROME.length)
     if (tool === 'browser_batch') {
@@ -76,17 +82,40 @@ function browserTexts(name: string, input: Record<string, unknown>): string[] {
           const item = a as { name?: unknown; input?: unknown }
           if (typeof item.name === 'string' && item.input && typeof item.input === 'object') {
             const tn = item.name.startsWith(CHROME) ? item.name.slice(CHROME.length) : item.name
-            texts.push(...forAction(tn, item.input as Record<string, unknown>))
+            add(forAction(tn, item.input as Record<string, unknown>), item.input as Record<string, unknown>)
           }
         }
       }
     } else {
-      texts = forAction(tool, input)
+      add(forAction(tool, input), input)
     }
   } else if (name.startsWith('mcp__') && /(type|fill|insert)/i.test(name)) {
-    texts = [str(input.text), str(input.value)].filter((s): s is string => !!s)
+    add([str(input.text), str(input.value)].filter((s): s is string => !!s), {})
   }
-  return texts.filter((t) => words(t) >= 3)
+  return out.filter((t) => words(t.text) >= 3)
+}
+
+function isYouTubeHost(url: string): boolean {
+  try {
+    const host = new URL(url).hostname.toLowerCase()
+    return host === 'youtube.com' || host.endsWith('.youtube.com')
+  } catch {
+    return false
+  }
+}
+
+// Tab id to URL for the browser group. Fails closed: any error or bad JSON gives no tabs.
+async function tabUrls($: EngineInterface): Promise<Map<number, string>> {
+  const urls = new Map<number, string>()
+  try {
+    const res = await $.mcp.call('claude-in-chrome', 'tabs_context_mcp', {})
+    if (res.isError) return urls
+    const block = (res.content as { type?: string; text?: string }[]).find((c) => c.type === 'text' && typeof c.text === 'string')
+    if (!block?.text) return urls
+    const ctx = JSON.parse(block.text.split('\n')[0] ?? '') as { availableTabs?: { tabId?: number; url?: string }[] }
+    for (const t of ctx.availableTabs ?? []) if (typeof t.tabId === 'number' && typeof t.url === 'string') urls.set(t.tabId, t.url)
+  } catch {}
+  return urls
 }
 
 async function readRules($: EngineInterface, voiceFile: string): Promise<string[]> {
@@ -148,15 +177,15 @@ export const register: Register = (on, options) => {
     }
 
     // Collect text to lint.
-    let texts: string[] = []
+    let texts: BrowserText[] = []
     let shell = false
     if (name === 'Write' || name === 'Edit') {
       const path = str(input.file_path)
-      if (isSocialFile(path)) texts = [name === 'Write' ? str(input.content) : str(input.new_string)]
+      if (isSocialFile(path)) texts = [{ text: name === 'Write' ? str(input.content) : str(input.new_string) }]
     } else if (name === 'Bash') {
       const cmd = str(input.command)
       if (bashTouchesSocial(cmd) && WRITES.test(cmd)) {
-        texts = [cmd]
+        texts = [{ text: cmd }]
         shell = true
       }
     } else if (name.startsWith('mcp__')) {
@@ -167,8 +196,13 @@ export const register: Register = (on, options) => {
     const hits: Hit[] = []
     const lolHistory = await readHistory($)
     let pendingLol: boolean[] = []
-    for (const t of texts) {
-      const textHits = lint(t, { shell })
+    let tabs: Map<number, string> | undefined
+    for (const { text: t, tabId } of texts) {
+      let textHits = lint(t, { shell })
+      if (tabId !== undefined && textHits.some((h) => h.rule === 'hashtag')) {
+        tabs ??= await tabUrls($)
+        if (isYouTubeHost(tabs.get(tabId) ?? '')) textHits = textHits.filter((h) => h.rule !== 'hashtag')
+      }
       const lol = hasLol(t)
       if (lol && [...lolHistory, ...pendingLol].slice(-9).some(Boolean)) {
         textHits.push({ rule: 'lol', match: 'lol: used in one of the last 10 texts' })

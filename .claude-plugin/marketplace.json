@@ -49,10 +49,16 @@
       "version": "0.1.0"
     },
     {
+      "name": "session-title",
+      "source": "./session-title",
+      "description": "Names each session in 2 to 5 words at the right end of the footer under the prompt, so many open terminals are easy to tell apart.",
+      "version": "0.1.0"
+    },
+    {
       "name": "slopless",
       "source": "./slopless",
       "description": "Blocks AI sounding text in social media writing (X replies, X posts, LinkedIn posts) and injects the writing rules.",
-      "version": "0.1.1"
+      "version": "0.1.3"
     },
     {
       "name": "snap",

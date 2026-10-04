@@ -35,10 +35,11 @@ Mods are not sandboxed. They run with the same access as Claude Code. Read the s
 | [agent-watch](agent-watch) | One line per running subagent above the prompt: model, task, minutes and its latest tool call. | |
 | [quote-buttons](quote-buttons) | Quote and edit buttons on chat messages, hand-off buttons that open a new tab with Claude on that message, and a 5 second undo for prompts sent while Claude works. | Fullscreen mode for the buttons; Konsole for hand-off |
 | [snap](snap) | `/snap`: drag a box on screen and the screenshot goes into your next message. | KDE (Spectacle) |
+| [session-title](session-title) | Names each session in 2 to 5 words at the right end of the footer under the prompt, so many open terminals are easy to tell apart. | One small Haiku call per turn |
 
 Each folder has its own README with the details.
 
-agent-watch, quote-buttons, save-game, active-time and snap are new. Bug reports are welcome in the issues.
+session-title is new. Bug reports are welcome in the issues.
 
 ## Develop
 

@@ -34,7 +34,9 @@ Reply format:
 
 ## Posts (X and LinkedIn)
 
-1. Open with the thing itself: what you built, found, broke or measured, with the number. No hook line like "Most devs get X wrong" or "One rule now covers everything".
+1. Always open with a hook. The first one or two lines must make the reader stop scrolling. Build the hook from the most surprising concrete thing in the post (a number, a failure, a result) and say what the reader gets from the rest. Template hooks that would fit under any post are banned: "Most devs get X wrong", "Nobody talks about this", "One rule now covers everything".
+   Good: "Every one of the 155 rows I scraped from Google Maps had invisible characters inside the phone number." The post then gives the 6 fixes.
+   Bad: "My app went from a red CI to 80 of 81 tests passing." A diary line gives no reason to keep reading.
 2. Show the real material: the file, the prompt, the command, the numbers, and say where the numbers come from.
 3. Normal paragraphs of 1 to 3 sentences. No one sentence per line staccato.
 4. Keep the mess: what failed first, "small sample", "not sure why yet", "maybe".
